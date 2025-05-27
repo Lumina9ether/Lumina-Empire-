@@ -149,3 +149,15 @@ function showCTA(tier) {
     ctaButton.onclick = () => window.open(url, "_blank");
     ctaButton.style.display = "inline-block";
 }
+
+// Stripe initialization for Academy access
+const stripe = Stripe("pk_test_51RQjAY2eqqnxrHWe1JL13E8Jv997md8qlwe01pk7jyCJe2hwCc439W3TTyAyYQPWKqf7I7HjWXXqpgQ7ZtJDrdkf00fRzJ9sHq");
+document.getElementById("enroll-button")?.addEventListener("click", async () => {
+  const response = await fetch("/create-checkout-session", { method: "POST" });
+  const session = await response.json();
+  if (session.url) {
+    window.location.href = session.url;
+  } else {
+    console.error("Stripe Checkout session creation failed:", session);
+  }
+});
